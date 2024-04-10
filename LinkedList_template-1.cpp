@@ -102,21 +102,29 @@ public:
     }
 
     void bookmarkCurrent() {
-        if (!current) {
-            std::cout << "There is no current tab to bookmark." << std::endl;
-            return;
-        }
+    if (!current) {
+        std::cout << "There is no current tab to bookmark." << std::endl;
+        return;
+    }
 
-        std::pair<std::string, std::string> bookmark(current->name, current->url);
+    std::pair<std::string, std::string> bookmark(current->name, current->url);
 
-        auto it = std::find(bookmarks.begin(), bookmarks.end(), bookmark);
-        if (it != bookmarks.end()) {
-            std::cout << "The bookmark is already added!" << std::endl;
-        } else {
-            bookmarks.push_back(bookmark);
-            std::cout << "Bookmark added for: " << current->name << std::endl;
+    // Replace std::find with a manual loop to check for existing bookmark
+    bool isBookmarked = false;
+    for (const auto& b : bookmarks) {
+        if (b.first == bookmark.first && b.second == bookmark.second) {
+            isBookmarked = true;
+            break;
         }
     }
+
+    if (isBookmarked) {
+        std::cout << "The bookmark is already added!" << std::endl;
+    } else {
+        bookmarks.push_back(bookmark);
+        std::cout << "Bookmark added for: " << current->name << std::endl;
+    }
+}
 
     void showBookmarkTab() {
         std::cout << "Bookmarks: " << std::endl;
