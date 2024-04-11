@@ -26,7 +26,6 @@ public:
     Browser() : head(nullptr), tail(nullptr), current(nullptr) {}
 
     void addNewTab(const std::string& url, const std::string& name, T memory) {
-        // Create a new tab node
         Tab<T>* newTab = new Tab<T>(url, name, memory);
 
         if (!head) {
@@ -109,7 +108,6 @@ public:
 
     std::pair<std::string, std::string> bookmark(current->name, current->url);
 
-    // Replace std::find with a manual loop to check for existing bookmark
     bool isBookmarked = false;
     for (const auto& b : bookmarks) {
         if (b.first == bookmark.first && b.second == bookmark.second) {
@@ -194,30 +192,24 @@ public:
             iterator = iterator->next;
         }
 
-        // Output the details of the tab to be deleted
         std::cout << "Deleted element = " << toDelete->name
                   << " with memory size = " << toDelete->memory << "MB" << std::endl;
 
-        // Remove the tab from the list
         if (toDelete->prev) {
             toDelete->prev->next = toDelete->next;
         } else {
-            // toDelete is the head
             head = toDelete->next;
         }
         if (toDelete->next) {
             toDelete->next->prev = toDelete->prev;
         } else {
-            // toDelete is the tail
             tail = toDelete->prev;
         }
 
-        // Update the current pointer if necessary
         if (toDelete == current) {
             current = toDelete->next ? toDelete->next : toDelete->prev;
         }
 
-        // Finally, delete the tab
         delete toDelete;
     }
 
