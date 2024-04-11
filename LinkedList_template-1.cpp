@@ -102,29 +102,21 @@ public:
     }
 
     void bookmarkCurrent() {
-    if (!current) {
-        std::cout << "There is no current tab to bookmark." << std::endl;
-        return;
-    }
+        if (!current) {
+            std::cout << "There is no current tab to bookmark." << std::endl;
+            return;
+        }
 
-    std::pair<std::string, std::string> bookmark(current->name, current->url);
+        std::pair<std::string, std::string> bookmark(current->name, current->url);
 
-    // Replace std::find with a manual loop to check for existing bookmark
-    bool isBookmarked = false;
-    for (const auto& b : bookmarks) {
-        if (b.first == bookmark.first && b.second == bookmark.second) {
-            isBookmarked = true;
-            break;
+        auto it = std::find(bookmarks.begin(), bookmarks.end(), bookmark);
+        if (it != bookmarks.end()) {
+            std::cout << "The bookmark is already added!" << std::endl;
+        } else {
+            bookmarks.push_back(bookmark);
+            std::cout << "Bookmark added for: " << current->name << std::endl;
         }
     }
-
-    if (isBookmarked) {
-        std::cout << "The bookmark is already added!" << std::endl;
-    } else {
-        bookmarks.push_back(bookmark);
-        std::cout << "Bookmark added for: " << current->name << std::endl;
-    }
-}
 
     void showBookmarkTab() {
         std::cout << "Bookmarks: " << std::endl;
@@ -235,7 +227,7 @@ public:
 
 int main(){
     
-    /*Browser<double> b1;
+    Browser<double> b1;
     b1.addNewTab("https://www.google.com","Google",23.45);
     b1.display();
     std::cout<<"Switch to previous tab = "<<std::endl;
@@ -286,6 +278,6 @@ int main(){
     b1.showBookmarkTab();
     b1.total_memory();
     b1.deleteTab();
-    b1.display();*/
+    b1.display();
     return 0;
 }
